@@ -27,9 +27,11 @@ connection.once('open', () => {
 
 //REQUIRE mongoose schema
 const blogRouter = require('./backend/routes/blogs');
+const tagRouter = require('./backend/routes/tags');
 
 //MIDDLEWARE for mongoose schema
 app.use('/blogs', blogRouter);
+app.use('/tags', tagRouter);
 
 //Server connection to designated port
 app.listen(PORT, () => {

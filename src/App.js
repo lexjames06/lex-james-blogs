@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
+import Tag from './Tag/Tag';
 
 function App() {
     const [title, setTitle] = useState('');
@@ -52,7 +53,11 @@ function App() {
     }
 
     function mapTags() {
-        return tags.map((tag, index) => <div key={index}>[{tag}]</div>);
+        return tags.map((tag, index) => (
+            <div key={index}>
+                <Tag tagName={tag} />
+            </div>
+        ));
     }
 
     return (
