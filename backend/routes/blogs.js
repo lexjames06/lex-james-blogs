@@ -27,19 +27,22 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/:id').get((req, res) => {
-    Blog.findById(req.params.id)
+    let title = req.params.id.split('-').join(' ');
+    Blog.find({ title: title })
         .then(blog => res.json(blog))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').delete((req, res) => {
-    Blog.findByIdAndDelete(req.params.id)
+    let title = req.params.id.split('-').join(' ');
+    Blog.deleteOne({ title: title })
         .then(() => res.json('Blog deleted!'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/update/:id').post((req, res) => {
-    Blog.findById(req.params.id)
+    let title = req.params.id.split('-').join(' ');
+    Blog.find({ title: title })
         .then(blog => {
             blog.title = req.body.title;
             blog.tags = req.body.tags;

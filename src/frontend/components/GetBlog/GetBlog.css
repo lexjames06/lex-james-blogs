@@ -1,0 +1,50 @@
+.blog-page-outer-container {
+    height: auto;
+    width: 100vw;
+}
+
+.blog-page-outer-container .blog-cover {
+    width: 100vw;
+    height: 40vh;
+    animation-duration: 3s;
+    transition: ease 3s;
+    background-color: tomato;
+}
+
+.blog-card-outer-container {
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    height: auto;
+    padding: 20px;
+    background-color: white;
+    margin: auto;
+    margin-top: -50px;
+    border-radius: 30px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    transition: ease 0.5s;
+    border: 1px solid rgba(216, 216, 216, 0.5);
+    position: relative;
+}
+
+.blog-card-outer-container#true {
+    transform: rotateY(90deg);
+}
+
+button#edit {
+    border: none;
+    background-color: rgb(207, 207, 207);
+    color: white;
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    border-radius: 18px;
+    right: 10px;
+    top: 10px;
+}
+
+button#edit svg {
+    fill: white;
+    height: 100%;
+    width: 100%;
+}

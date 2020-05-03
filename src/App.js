@@ -1,107 +1,79 @@
 import React, { useState, useEffect } from 'react';
+import { Link, BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
-import axios from 'axios';
-import Tag from './Tag/Tag';
+import AddBlog from './frontend/components/AddBlog/AddBlog';
+import Blogs from './frontend/components/Blogs/Blogs';
+import GetBlog from './frontend/components/GetBlog/GetBlog';
 
 function App() {
-    const [title, setTitle] = useState('');
-    const [currentTag, setCurrentTag] = useState('');
-    const [tags, setTags] = useState([]);
-    const [body, setBody] = useState('');
-    const [readTime, setReadTime] = useState('');
+    const [flipCard, setFlipCard] = useState(false);
+    const [previewMode, setPreviewMode] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [cardWidth, setCardWidth] = useState('wide');
 
-    function updateTag(e) {
-        let typedTag = e.target.value;
-        if (typedTag[typedTag.length - 1] === ',') {
-            setCurrentTag('');
-            setTags([...tags, typedTag.split(',')[0]]);
-        } else {
-            setCurrentTag(typedTag);
-        }
+    function flipPreviewCard() {
+        setFlipCard(true);
+        setTimeout(() => {
+            setPreviewMode(!previewMode);
+            setFlipCard(false);
+        }, 500);
     }
 
-    function updateTitle(e) {
-        setTitle(e.target.value);
+    function flipEditCard() {
+        setFlipCard(true);
+        setTimeout(() => {
+            setEditMode(!editMode);
+            setFlipCard(false);
+        }, 500);
     }
 
-    function updateBody(e) {
-        setBody(e.target.value);
-    }
-
-    async function handleForm(e) {
-        e.preventDefault();
-
-        const blogLength = body.split(' ').length;
-        setReadTime(Math.ceil(blogLength / 200));
-
-        const blog = {
-            title: title,
-            tags: tags,
-            body: body,
-            readTime: readTime,
-        };
-
-        axios
-            .post('/blogs/add', blog)
-            .then(res => console.log(res.data))
-            .catch(err => console.log('Error: ', err));
-
-        setCurrentTag('');
-        setTags([]);
-        setTitle('');
-        setBody('');
-    }
-
-    function mapTags() {
-        return tags.map((tag, index) => (
-            <div key={index}>
-                <Tag tagName={tag} />
-            </div>
-        ));
+    function toggleCardWidth() {
+        let routeURL = window.location.href.split('/')
+        return routeURL[routeURL.length - 1] === 'blogs' ? setCardWidth('wide') : setCardWidth('narrow')
     }
 
     return (
         <div className='App'>
-            <div>
-                <form onSubmit={e => handleForm(e)}>
-                    <div>
-                        <label>Title </label>
-                        <input
-                            type='text'
-                            name='lexBlogTitle'
-                            value={title}
-                            placeholder='Title...'
-                            onChange={e => updateTitle(e)}
-                        />
+            <div className='blogs-page-outer-container'>
+                <BrowserRouter>
+                    <div className='nav-bar'>
+                        <Link to='/blogs/add'>
+                            <button>
+                                <h3>Add Blog</h3>
+                            </button>
+                        </Link>
+                        <Link to='/blogs'>
+                            <button>
+                                <h3>Blogs</h3>
+                            </button>
+                        </Link>
                     </div>
-                    <div>
-                        <label>Tags </label>
-                        <input
-                            type='text'
-                            name='tags'
-                            value={currentTag}
-                            placeholder='tags (separated by commas)'
-                            onChange={e => updateTag(e)}
-                        />
+                    <div className='cover'></div>
+                    <div
+                        className={`card-outer-container ${cardWidth}`}
+                        id={`${flipCard}`}
+                    >
+                        <Switch>
+                            <Route exact path='/blogs/add'>
+                                <AddBlog
+                                    flipPreviewCard={() => flipPreviewCard()}
+                                    previewMode={previewMode}
+                                    toggleCardWidth={() => toggleCardWidth()}
+                                />
+                            </Route>
+                            <Route exact path='/blogs/'>
+                                <Blogs toggleCardWidth={() => toggleCardWidth()} />
+                            </Route>
+                            <Route exact path='/blogs/:id'>
+                                <GetBlog 
+                                    flipEditCard={() => flipEditCard()}
+                                    editMode={editMode}
+                                    toggleCardWidth={() => toggleCardWidth()}
+                                />
+                            </Route>
+                        </Switch>
                     </div>
-                    <div>
-                        <label>Body </label>
-                        <input
-                            type='text'
-                            name='body'
-                            value={body}
-                            placeholder='Body...'
-                            onChange={e => updateBody(e)}
-                        />
-                    </div>
-                    <div>
-                        <button type='submit'>Submit</button>
-                    </div>
-                    <div>Title: {title}</div>
-                    <div>Tag: {currentTag}</div>
-                    <div>Body: {body}</div>
-                    <div>Tags: {mapTags()}</div>
-                </form>
+                </BrowserRouter>
             </div>
         </div>
     );

@@ -65,20 +65,13 @@ export default function Tag({ tagName }) {
                     console.log(tagDataName)
                     console.log(tagDataColor)
                 })
-                // .then(() => {
-                //     if (tag === '') {
-                //         setTag(tagName);
-                //         setColor(getRandomColor());
-                //         saveTagColor();
-                //     }
-                // })
-                .catch(() => {
+                .catch(err => {
                     saveTagColor();
+                    console.log('Error: ' + err);
                 });
-                // .catch(err => console.log('Error: ' + err));
         }
         fetchData();
     }, [tagName]);
 
-    return <div style={{ 'color': `${color}` }}>{tag}</div>;
+    return <div><h4>{tag}</h4></div>;
 }

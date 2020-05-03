@@ -1,7 +1,82 @@
 .App {
-  text-align: center;
+    text-align: center;
+    width: 100vw;
 }
 
-input:focus {
-  outline: none;
+button {
+    box-sizing: border-box;
+    width: 50vw;
+    margin: 0 0vw;
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.nav-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5vh;
+    background-color: black;
+}
+
+.nav-bar button {
+    background-color: transparent;
+    border: none;
+    color: white;
+}
+
+.card-outer-container {
+    display: flex;
+    height: auto;
+    padding: 20px;
+    background-color: white;
+    margin: auto;
+    margin-top: -50px;
+    border-radius: 30px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    transition: ease 0.5s;
+    border: 1px solid rgba(216, 216, 216, 0.5);
+    position: relative;
+    transition: ease 0.3s;
+}
+
+.card-outer-container.narrow {
+    flex-direction: column;
+    width: 60vw;
+}
+
+.card-outer-container.wide {
+    width: 90vw;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.card-outer-container#true {
+    transform: rotateY(90deg);
+}
+
+.card-outer-container h1 {
+    width: 100%;
+}
+
+.cover {
+    width: 100vw;
+    height: 40vh;
+    background-color: rgb(158, 205, 250);
 }
