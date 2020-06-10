@@ -42,7 +42,7 @@ router.route('/:id').delete((req, res) => {
 
 router.route('/update/:id').post((req, res) => {
     let title = req.params.id.split('-').join(' ');
-    Blog.find({ title: title })
+    Blog.findOne({ title: title })
         .then(blog => {
             blog.title = req.body.title;
             blog.tags = req.body.tags;
@@ -51,9 +51,9 @@ router.route('/update/:id').post((req, res) => {
 
             blog.save()
                 .then(() => res.json('Blog updated!'))
-                .catch(err => res.status(400).json('Error: ', err));
+                .catch(err => res.status(400).json('Error: ' + err));
         })
-        .catch(err => res.status(400).json('Error: ', err));
+        .catch(err => res.status(400).json('Error: ' + err));
 });
 
 module.exports = router;

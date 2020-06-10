@@ -1,6 +1,6 @@
 .blog-card-title h1 {
     margin: 20px 0 5px;
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .blog-card-tags {
@@ -21,6 +21,31 @@
     text-align: left;
 }
 
+.blog-card-body h2,
+.blog-card-body h3,
+.blog-card-body h4,
+.blog-card-body h5 {
+    /* color: #05bccb; */
+    /* text-decoration: underline solid white; */
+    /* background-color: black; */
+    display: inline-block;
+    margin: 0;
+    padding: 3px;
+}
+
 .blog-card-tags .blog-tag {
     background-color: rgb(39, 143, 240);
+}
+
+.blog-card-body img {
+    width: 100%;
+    height: auto;
+}
+
+figcaption {
+    font-style: italic;
+    color: rgb(167, 166, 166);
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 15px;
 }

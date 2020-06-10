@@ -3,19 +3,33 @@ import { Link } from 'react-router-dom';
 
 import './Blogs.css';
 
-export default function Blogs({ toggleCardWidth }) {
+export default function Blogs({ toggleCardWidth, turnEditOff }) {
     const [blogs, setBlogs] = useState([]);
     const [tagsData, setTagsData] = useState([]);
+    const [fetched, setFetched] = useState(false);
+
+    const images = [
+        {
+            name: 'my-choice-to-join-a-coding-bootcamp',
+            source:
+                'https://thepracticaldev.s3.amazonaws.com/i/m64v554hafaecr2134wm.jpeg',
+        },
+    ];
 
     useEffect(() => {
+        turnEditOff();
         async function getBlogs() {
             fetch('/blogs/all-blogs')
                 .then(res => res.json())
                 .then(data => {
                     const allBlogs = data;
                     setBlogs(allBlogs);
+                    setFetched(true);
                 })
-                .catch(err => console.log('Error: ' + err));
+                .catch(err => {
+                    setBlogs('error');
+                    console.log('Error: ' + err);
+                });
         }
         async function getTags() {
             fetch('/tags')
@@ -30,6 +44,15 @@ export default function Blogs({ toggleCardWidth }) {
         getTags();
         toggleCardWidth();
     }, []);
+
+    function setThumbnailImage({ title }) {
+        let kebabTitle = title.split(' ').join('-');
+
+        let thumbnailImage =
+            images.find(image => image.name === kebabTitle) || '';
+
+        return thumbnailImage && <img src={thumbnailImage.source} alt='' />;
+    }
 
     function displayTags(blog) {
         return blog.tags.map(tag => {
@@ -67,38 +90,53 @@ export default function Blogs({ toggleCardWidth }) {
         return title
             ?.split(' ')
             .reduce((wordArray, word) => {
-                let letters = word.split('')
+                let letters = word.split('');
                 let letterToCapitalise = letters.shift();
                 let capitalLetter = letterToCapitalise.toUpperCase();
-                let formattedWord = [capitalLetter, ...letters].join('')
-                wordArray.push(formattedWord)
+                let formattedWord = [capitalLetter, ...letters].join('');
+                wordArray.push(formattedWord);
                 return wordArray;
-            }, []).join(' ');
+            }, [])
+            .join(' ');
     }
 
     function displayBlogs() {
-        let blogsToDisplay = blogs.sort((a, b) =>
-            a.createdAt > b.createdAt ? -1 : 1
-        );
-        return blogsToDisplay.map(blog => {
-            return (
-                <Link to={`/blogs/${setBlogUrl(blog)}`}>
-                    <div className='blog-container' key={blog.id}>
-                        <div className='blog-thumbnail'></div>
-                        <div className='blog-info'>
-                            <div className='blog-tags'>{displayTags(blog)}</div>
-                            <div className='blog-title'>
-                                <h2>{formatTitle(blog.title)}</h2>
-                            </div>
-                            <div className='blog-body'>
-                                {displayBlogBodyPreview(blog.body)}
-                            </div>
-                            <div className='blog-share-bar'><h4>Social Media Shar Buttons</h4></div>
-                        </div>
-                    </div>
-                </Link>
+        if (blogs === 'error') {
+            return "It looks like we made a mistake. Try refreshing the page...";
+        } else if(fetched === false) {
+            return 'Loading...';
+        } else if(!blogs) {
+            return 'It looks like we don\'t have any blogs in our database';
+        } else {
+            let blogsToDisplay = blogs.sort((a, b) =>
+                a.createdAt > b.createdAt ? -1 : 1
             );
-        });
+            return blogsToDisplay.map(blog => {
+                return (
+                    <Link to={`/blogs/${setBlogUrl(blog)}`}>
+                        <div className='blog-container' key={blog.id}>
+                            <div className='blog-thumbnail'>
+                                {setThumbnailImage(blog)}
+                            </div>
+                            <div className='blog-info'>
+                                <div className='blog-tags'>
+                                    {displayTags(blog)}
+                                </div>
+                                <div className='blog-title'>
+                                    <h2>{formatTitle(blog.title)}</h2>
+                                </div>
+                                <div className='blog-body'>
+                                    {displayBlogBodyPreview(blog.body)}
+                                </div>
+                                <div className='blog-share-bar'>
+                                    <h4>Social Media Share Buttons</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </Link>
+                );
+            });
+        }
     }
 
     function displayBlogBodyPreview(body) {

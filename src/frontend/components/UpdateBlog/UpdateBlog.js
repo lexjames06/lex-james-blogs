@@ -5,7 +5,7 @@ import Tag from '../Tag/Tag';
 
 import './UpdateBlog.css';
 
-export default function UpdateBlog({ blogTitle, blogTags = [], blogBody }) {
+export default function UpdateBlog({ blogTitle, blogTags = [], blogBody, updateCardWidth }) {
     const [title, setTitle] = useState(blogTitle);
     const [currentTag, setCurrentTag] = useState('');
     const [tags, setTags] = useState(blogTags);
@@ -16,7 +16,7 @@ export default function UpdateBlog({ blogTitle, blogTags = [], blogBody }) {
         let typedTag = e.target.value;
         if (typedTag[typedTag.length - 1] === ',') {
             setCurrentTag('');
-            setTags([...tags, typedTag.split(',')[0].toLowreCase()]);
+            setTags([...tags, typedTag.split(',')[0].toLowerCase()]);
         } else {
             setCurrentTag(typedTag);
         }
@@ -76,17 +76,23 @@ export default function UpdateBlog({ blogTitle, blogTags = [], blogBody }) {
     }
 
     async function handleDelete() {
+        
         const url = window.location.href.split('/');
         const urlId = url[url.length - 1];
 
         axios
             .delete(`/blogs/all-blogs/${urlId}`)
             .then(res => console.log(res.data))
+            .then(updateCardWidth)
             .catch(err => console.log('Error: ', err));
     }
 
+    function submitUpdate() {
+        console.log('submitted update')
+    }
+
     return (
-        <div>
+        <div className='update-form'>
             <form onSubmit={e => handleForm(e)}>
                 <div className='input-title update'>
                     <label>
@@ -128,12 +134,12 @@ export default function UpdateBlog({ blogTitle, blogTags = [], blogBody }) {
                     />
                 </div>
                 <div className='update-button'>
-                    <button id='update' type='submit'>
+                    <button id='update' type='submit' onClick={(e) => handleForm(e)}>
                         Update
                     </button>
                 </div>
             </form>
-            <Link to='/blogs/'>
+            <Link to='/blogs'>
                 <button id='delete' onClick={() => handleDelete()}>
                     <svg width='24' height='24' viewBox='0 0 24 24'>
                         <path d='M9 19c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5-17v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712zm-3 4v16h-14v-16h-2v18h18v-18h-2z' />

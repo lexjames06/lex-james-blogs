@@ -1,0 +1,26 @@
+.nav-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5vh;
+    background-color: black;
+}
+
+.nav-bar button {
+    background-color: transparent;
+    border: none;
+    color: white;
+}
+
+.nav-bar h3 {
+    margin: 0;
+    font-size: 2vw;;
+}
+
+.login svg {
+    position: absolute;
+    height: 3vh;
+    top: 1vh;
+    right: 3vw;
+    fill: white;
+}

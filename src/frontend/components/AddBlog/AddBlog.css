@@ -27,6 +27,11 @@ form {
     flex-direction: column;
 }
 
+form h5 {
+    color: rgb(255, 71, 38);
+    margin: 0;
+}
+
 form .input-title input,
 form .input-body textarea {
     box-sizing: border-box;
@@ -102,13 +107,18 @@ form .input-tags input {
 .form-buttons button {
     margin: 0 5px;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 18px;
     font-size: 15px;
     border: none;
     color: white;
     outline: none;
     width: 30vw;
+    height: 35px;
     max-width: 200px;
+}
+
+.form-buttons button h4 {
+    margin: 0;
 }
 
 .form-buttons button#preview {

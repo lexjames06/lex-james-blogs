@@ -41,3 +41,7 @@ button#update {
     max-width: 200px;
     background-color: rgb(39, 143, 240);
 }
+
+.update-form {
+    width: 100%;
+}
